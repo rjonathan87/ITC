@@ -1,0 +1,2 @@
+npm i -S bcrypt body-parser cors express jsonwebtoken mysql mysql2 sequelize
+npm i -D nodemon
