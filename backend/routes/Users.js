@@ -54,4 +54,49 @@ users.post('/register', (req, res) => {
         })
 });
 
+// Login
+users.post('/login', (req, res) => {
+    User.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+        .then(user => {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
+                let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
+                    expiresIn: 1440
+                });
+                res.json({
+                    token: token
+                });
+            } else {
+                res.send('User does not exist');
+            }
+        })
+        .catch(err => {
+            res.send(`Error: ${err}`);
+        })
+});
+
+// Profile
+users.get('/profile', (req, res) => {
+    var decode = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY);
+
+    users.findOne({
+            where: {
+                id: decode.id
+            }
+        })
+        .then(user => {
+            if (user) {
+                res.json(user);
+            } else {
+                res.send('User does not exist');
+            }
+        })
+        .catch(err => {
+            res.send(`Error: ${err}`);
+        });
+})
+
 module.exports = users;
