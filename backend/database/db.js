@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const db = {};
-const sequelize = new Sequelize('itc', 'root', 'admincc@0120', {
+const sequelize = new Sequelize('', '', '', {
     host: 'cimesistema.ddns.net',
     dialect: 'mysql',
     operatorsAliases: false,
