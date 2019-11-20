@@ -29,6 +29,7 @@ export interface TokenPayload {
 @Injectable()
 export class AuthenticationService {
   private token: string;
+  private URI_API = 'http://localhost:3000';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -65,21 +66,11 @@ export class AuthenticationService {
   }
 
   public register(user: TokenPayload): Observable<any> {
-    const base = this.http.post(`/user/register`, user);
-
-    const request = base.pipe(
-      map((data: TokenResponse) => {
-        if (data.token) {
-          this.saveToken(data.token);
-        }
-        return data;
-      })
-    );
-    return request;
+    return this.http.post(`${this.URI_API}/users/register`, user);
   }
 
   public login(user: TokenPayload): Observable<any> {
-    const base = this.http.post(`/user/login`, user);
+    const base = this.http.post(`${this.URI_API}/users/login`, user);
 
     const request = base.pipe(
       map((data: TokenResponse) => {
@@ -93,8 +84,8 @@ export class AuthenticationService {
   }
 
   public profile(): Observable<any> {
-    return this.http.get(`/users/profile`, {
-      headers: { Authorization: `${this.getUserDetails()}` }
+    return this.http.get(`${this.URI_API}/users/profile`, {
+      headers: { Authorization: `${this.getToken()}` }
     });
   }
 

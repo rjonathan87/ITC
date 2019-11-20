@@ -26,19 +26,14 @@ users.post('/register', (req, res) => {
                 email: req.body.email
             }
         })
-
         .then(user => {
             if (!user) {
                 const hash = bcrypt.hashSync(userData.password, 10);
                 userData.password = hash;
                 User.create(userData)
                     .then(user => {
-                        let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
-                            expiresIn: 1440
-                        });
-                        res.json({
-                            token: token
-                        });
+                        let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, { expiresIn: 1440 });
+                        res.json({ token: token });
                     })
                     .catch(err => {
                         res.send(`Error: ${err}`);
@@ -58,33 +53,31 @@ users.post('/register', (req, res) => {
 users.post('/login', (req, res) => {
     User.findOne({
             where: {
-                email: req.body.email
+                email: req.body.email,
             }
         })
         .then(user => {
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
                     expiresIn: 1440
-                });
-                res.json({
-                    token: token
-                });
+                })
+                res.json({ token: token })
             } else {
-                res.send('User does not exist');
+                res.send('User does not exist')
             }
         })
         .catch(err => {
-            res.send(`Error: ${err}`);
+            res.send('Error: ' + err)
         })
 });
 
 // Profile
 users.get('/profile', (req, res) => {
-    var decode = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY);
+    var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY);
 
-    users.findOne({
+    User.findOne({
             where: {
-                id: decode.id
+                id: decoded.id
             }
         })
         .then(user => {
@@ -95,7 +88,7 @@ users.get('/profile', (req, res) => {
             }
         })
         .catch(err => {
-            res.send(`Error: ${err}`);
+            res.send(`Error in profile: ` + err);
         });
 })
 
