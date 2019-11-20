@@ -3,3 +3,8 @@ backend/database
 backend/database/db.js
 frontend/dist
 
+/*
+git rm -r --cached .
+git add .
+git commit -m "Limpieza de Cache" 
+*/
