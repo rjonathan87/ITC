@@ -12,6 +12,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { AuthenticationService } from './authentication.service';
 import { AuthGuardService } from './auth-guard.service';
+import { FoliosComponent } from './protected/folios/folios.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AuthGuardService } from './auth-guard.service';
     ProfileComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    FoliosComponent
   ],
   imports: [
     BrowserModule,

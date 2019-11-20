@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { AuthenticationService } from './authentication.service';
 import { AuthGuardService } from './auth-guard.service';
+import { FoliosComponent } from './protected/folios/folios.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,6 +16,11 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'folios',
+    component: FoliosComponent,
     canActivate: [AuthGuardService]
   }
 ];
